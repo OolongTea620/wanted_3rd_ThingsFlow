@@ -1,0 +1,34 @@
+{
+  "name": "3rd_thingsflow_hyelin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pre-on-boarding-5th-teamE/3rd_ThingsFlow_hyelin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pre-on-boarding-5th-teamE/3rd_ThingsFlow_hyelin/issues"
+  },
+  "homepage": "https://github.com/pre-on-boarding-5th-teamE/3rd_ThingsFlow_hyelin#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.23.2",
+    "sequelize-cli": "^6.5.1"
+  },
+  "devDependencies": {
+    "jest": "^29.0.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.2.4"
+  }
+}
