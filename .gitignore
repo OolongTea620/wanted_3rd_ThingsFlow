@@ -1,3 +1,6 @@
+# npm 
+*lock.json
+.env
 # Logs
 logs
 *.log
