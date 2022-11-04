@@ -38,19 +38,18 @@ const getPostList = async (data) => {
 };
 
 const updatePost = async (data) => {
-  const postId = data.postId;
+  const postId = data.params.postId;
+  const body = data.body;
+
   const post = await getPostById(postId);
   const postPassword = post.password;
-
-  if (!(await matchPostPassword(data.password, postPassword))) {
+  if (!(await matchPostPassword(body.password, postPassword))) {
     throw error("incorrect password", 401);
   }
+  delete body.password;
 
-  const result = await post.update(
-    {
-      title: data.title,
-      content: data.content,
-    },
+  const result = await Post.update(
+    { ...body },
     {
       where: {
         id: postId,

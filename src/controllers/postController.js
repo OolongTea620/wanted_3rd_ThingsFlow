@@ -1,14 +1,18 @@
 const userService = require("../services/userService");
 const error = require("../middlewares/errorConstructor");
+const PostValidator = require("../middlewares/Postvalidator");
 
 const writePost = async (req, res) => {
-  const result = await userService.writePost(req.body);
+  const validator = new PostValidator(req);
+  validator.createValidator();
 
+  const result = await userService.writePost(req.body);
   if (!result) {
     throw new error("Server_Error", 500);
   }
   res.status(201).json({ message: "post create success" });
 };
+
 const getPostList = async (req, res) => {
   const query = req.query;
   const result = await userService.getPostList(query);
@@ -18,9 +22,10 @@ const getPostList = async (req, res) => {
 };
 
 const editPost = async (req, res) => {
-  const postId = req.params.postId;
-  req.body.postId = postId;
-  const result = await userService.updatePost(res.body);
+  const validator = new PostValidator(req);
+  validator.updateValidator();
+
+  const result = await userService.updatePost(req);
   if (!result) {
     res.status(500).json("UpdateFail");
   }
