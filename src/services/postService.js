@@ -1,5 +1,6 @@
-const Post = require("../models/post");
+const weatherService = require("./weatherService");
 const crypto = require("../utils/crypto");
+const Post = require("../models/post");
 const error = require("../middlewares/errorConstructor");
 
 const getPostById = async (postId) => {
@@ -11,6 +12,7 @@ const getPostById = async (postId) => {
 
   return post;
 };
+
 const matchPostPassword = async (inputPass, postpass) => {
   if (!postpass) {
     return true;
@@ -18,16 +20,18 @@ const matchPostPassword = async (inputPass, postpass) => {
   return await crypto.matchPassword(inputPass, postpass);
 };
 
-const createPost = async (data) => {
-  const password = data.password;
-  const hashedPassword = crypto.hashPassword(password);
+const createPost = async (req) => {
+  const password = req.body.password || null;
+  const hashedPassword = password ? crypto.hashPassword(password) : null;
+  const input = {
+    title: req.body.title,
+    content: req.body.content,
+    user_id: req.user.id,
+    password: password ? hashedPassword : null,
+  };
+  const post = await Post.create(input);
 
-  const post = await Post.create({
-    title,
-    content,
-    password: hashedPassword,
-    user_id: data.UserId,
-  });
+  const weatherRecord = await weatherService.recordWeather(req, post.id);
   return post;
 };
 
