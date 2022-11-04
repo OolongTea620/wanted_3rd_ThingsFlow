@@ -8,9 +8,11 @@ const hashPassword = async (password) => {
 
   return await bcrypt.hash(password, salt);
 };
+
 const matchPassword = async (inputpassword, userPassword) => {
   return await bcrypt.compare(inputpassword, userPassword);
 };
+
 const getAccessToken = async (id) => {
   const accessToken = jwt.sign({ id: id }, process.env.JWT_SECRET, {
     algorithm: process.env.ALGORITHM,
@@ -22,4 +24,5 @@ const getAccessToken = async (id) => {
 module.exprots = {
   hashPassword,
   matchPassword,
+  getAccessToken,
 };

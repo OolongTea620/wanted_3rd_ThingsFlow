@@ -6,6 +6,6 @@ const errorHandler = require("../middlewares/errorHandler");
 router.post("/write", errorHandler(postController.writePost));
 router.get("/list", errorHandler(postController.getPostList));
 router.patch("/edit/:postId(\\d+)", errorHandler(postController.editPost));
-router.delete("/delete/:postId(\\d+)", errorHandler(postController.deletePost));
+router.post("/delete/:postId(\\d+)", errorHandler(postController.deletePost));
 
 module.exports = router;
