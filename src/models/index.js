@@ -5,7 +5,7 @@ const db = {};
 
 const User = require("../models/user");
 const Post = require("../models/post");
-const WeatherRecord = require("../models/weathetRecord");
+const WeatherRecord = require("../models/weatherRecord");
 
 const sequelize = new Sequelize(
   config.database,
