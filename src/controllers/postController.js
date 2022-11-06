@@ -6,7 +6,7 @@ const writePost = async (req, res) => {
   const validator = new postValidator(req);
   validator.createValidator();
 
-  const result = await postService.writePost(req);
+  const result = await postService.createPost(req);
   if (!result) {
     throw new error("Server_Error", 500);
   }
@@ -15,11 +15,12 @@ const writePost = async (req, res) => {
 };
 
 const getPostList = async (req, res) => {
-  const query = req.query;
-  const result = await postService.getPostList(query);
+  const result = await postService.getPostList(req.query);
+
   if (!result) {
     res.status(204).json("No_Content");
   }
+  return res.status(200).json(result);
 };
 
 const editPost = async (req, res) => {
@@ -30,7 +31,7 @@ const editPost = async (req, res) => {
   if (!result) {
     res.status(500).json("UpdateFail");
   }
-  res.status(200).json("update sucees");
+  res.status(200).json({ message: "update sucees" });
 };
 
 const deletePost = async (req, res) => {
@@ -38,7 +39,7 @@ const deletePost = async (req, res) => {
   const password = req.body.password;
 
   const result = await postService.deletePost({ postId, password });
-  res.staus(204).json("delete success");
+  res.status(204).json({ message: "delete success" });
 };
 
 module.exports = {

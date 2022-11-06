@@ -1,6 +1,8 @@
 const weatherService = require("./weatherService");
 const crypto = require("../utils/crypto");
 const Post = require("../models/post");
+const WeatherRecord = require("../models/weatherRecord");
+
 const error = require("../middlewares/errorConstructor");
 
 const getPostById = async (postId) => {
@@ -22,12 +24,12 @@ const matchPostPassword = async (inputPass, postpass) => {
 
 const createPost = async (req) => {
   const password = req.body.password || null;
-  const hashedPassword = password ? crypto.hashPassword(password) : null;
+  const hashedPassword = password ? await crypto.hashPassword(password) : null;
   const input = {
     title: req.body.title,
     content: req.body.content,
     user_id: req.user.id,
-    password: password ? hashedPassword : null,
+    password: hashedPassword || null,
   };
   const post = await Post.create(input);
 
@@ -35,9 +37,21 @@ const createPost = async (req) => {
   return post;
 };
 
-const getPostList = async (data) => {
-  const sort = data.sort === "past" ? "ASC" : "DESC";
-  const result = await Post.findAll({ order: ["created_at", sort] });
+const getPostList = async (query) => {
+  const sort = query.sort || undefined;
+  const orderBy = !sort && sort === "past" ? "ASC" : "DESC";
+
+  const result = await Post.findAll({
+    attributes: { exclude: ["password"] },
+    order: [["created_at", orderBy]],
+    include: [
+      {
+        model: WeatherRecord,
+        required: false,
+        attributes: ["expression", "temperature_c", "humidity"],
+      },
+    ],
+  });
   return result;
 };
 
@@ -48,7 +62,7 @@ const updatePost = async (data) => {
   const post = await getPostById(postId);
   const postPassword = post.password;
   if (!(await matchPostPassword(body.password, postPassword))) {
-    throw error("incorrect password", 401);
+    throw new error("incorrect password", 401);
   }
   delete body.password;
 
@@ -67,10 +81,14 @@ const updatePost = async (data) => {
 const deletePost = async (data) => {
   const { postId, password } = data;
   const post = await getPostById(postId);
+
+  if (!post) {
+    throw new error("No_Content", 402);
+  }
   const postPassword = post.password;
 
   if (!(await matchPostPassword(password, postPassword))) {
-    throw error("incorrect password", 401);
+    throw new error("incorrect password", 401);
   }
 
   const result = await Post.destroy({ where: { id: postId } });

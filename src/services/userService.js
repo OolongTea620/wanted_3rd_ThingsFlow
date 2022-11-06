@@ -3,6 +3,13 @@ const crypto = require("../utils/crypto");
 const User = require("../models/user");
 const error = require("../middlewares/errorConstructor");
 
+const getUserById = async (id) => {
+  const user = await User.findOne({
+    where: { id: id },
+  });
+  return user;
+};
+
 const getUserbyEmail = async (email) => {
   const user = await User.findOne({
     where: {
@@ -47,4 +54,4 @@ const signIn = async (userData) => {
   return accessToken;
 };
 
-module.exports = { createUser, signIn };
+module.exports = { createUser, signIn, getUserById };
