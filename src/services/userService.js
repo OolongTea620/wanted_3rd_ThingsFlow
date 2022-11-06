@@ -21,10 +21,11 @@ const createUser = async (userData) => {
   }
 
   const hashedPassword = await crypto.hashPassword(password);
+
   const user = await User.create({
-    email,
+    email: email,
     password: hashedPassword,
-    name,
+    name: name,
   });
 
   return user;
@@ -41,7 +42,7 @@ const signIn = async (userData) => {
   if (!isMatch) {
     throw new error("Incorrect_Password", 401);
   }
-  const accessToken = await getAccessToken(user.id);
+  const accessToken = await crypto.getAccessToken(user.id);
 
   return accessToken;
 };
