@@ -91,8 +91,7 @@ const deletePost = async (data) => {
     throw new error("incorrect password", 401);
   }
 
-  const result = await Post.destroy({ where: { id: postId } });
-  return result;
+  await Post.destroy({ where: { id: postId } });
 };
 
 module.exports = { createPost, getPostList, updatePost, deletePost };

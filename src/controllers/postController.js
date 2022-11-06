@@ -38,8 +38,8 @@ const deletePost = async (req, res) => {
   const postId = req.params.postId;
   const password = req.body.password;
 
-  const result = await postService.deletePost({ postId, password });
-  res.status(204).json({ message: "delete success" });
+  await postService.deletePost({ postId, password });
+  res.status(200).json({ message: "delete success" });
 };
 
 module.exports = {
