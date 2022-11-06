@@ -3,8 +3,8 @@ const router = express.Router();
 
 const userRouter = require("./userRouter");
 const postRouter = require("./postRouter");
-const weatherRouter = require("./weatherRouter");
 
-router.use("/user", userRouter.route);
+router.use("/user", userRouter);
+router.use("/post", postRouter);
 
 module.exports = router;

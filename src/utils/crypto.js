@@ -21,7 +21,7 @@ const getAccessToken = async (id) => {
 
   return accessToken;
 };
-module.exprots = {
+module.exports = {
   hashPassword,
   matchPassword,
   getAccessToken,

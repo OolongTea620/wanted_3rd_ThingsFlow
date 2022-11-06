@@ -1,9 +1,9 @@
 const postService = require("../services/postService");
 const error = require("../middlewares/errorConstructor");
-const PostValidator = require("../middlewares/Postvalidator");
+const postValidator = require("../middlewares/postValidator");
 
 const writePost = async (req, res) => {
-  const validator = new PostValidator(req);
+  const validator = new postValidator(req);
   validator.createValidator();
 
   const result = await postService.writePost(req);
@@ -23,7 +23,7 @@ const getPostList = async (req, res) => {
 };
 
 const editPost = async (req, res) => {
-  const validator = new PostValidator(req);
+  const validator = new postValidator(req);
   validator.updateValidator();
 
   const result = await postService.updatePost(req);
